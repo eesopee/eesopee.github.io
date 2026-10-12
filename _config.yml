@@ -1,3 +1,7 @@
-theme: jekyll-theme-midnight
-title: Giovanni Isopi's homepage
-description: test test
+title: Giovanni Isopi's personal webpage
+tagline: Test
+description: Test
+
+remote_theme: pages-themes/midnight@v0.2.0
+plugins:
+- jekyll-remote-theme # add this line to the plugins list if you already have one
