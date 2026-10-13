@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giovanni Isopi - Personal Website</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Times New Roman', 'Georgia', 'Times', 'serif'],
+                        mono: ['Courier New', 'Courier', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /*
+          ===================================================================
+          HOW TO USE YOUR OWN ASTROPHOTOGRAPHY PHOTO ON GITHUB PAGES:
+          1. Upload your photo (e.g., 'my-astro-photo.jpg') to your GitHub repository.
+          2. Replace the URL in the variable below with 'url("my-astro-photo.jpg")'.
+          ===================================================================
+        */
+        :root {
+            --hero-bg-img: url('https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?q=80&w=2000&auto=format&fit=crop');
+        }
+
+        body {
+            background-color: #080a10;
+            color: #e2e8f0;
+            font-family: 'Times New Roman', Georgia, Times, serif;
+            overflow-x: hidden;
+        }
+
+        /* Hero top banner background image with subtle dark gradient overlay */
+        .astro-hero-bg {
+            background-image: linear-gradient(180deg, rgba(8, 10, 16, 0.4) 0%, rgba(8, 10, 16, 0.85) 80%, #080a10 100%), var(--hero-bg-img);
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Semi-transparent Grey Boxes / Cards requested */
+        .grey-box {
+            background: rgba(128, 128, 128, 0.18);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(200, 200, 200, 0.25);
+            border-radius: 0.5rem;
+        }
+
+        .grey-box-hover {
+            transition: all 0.3s ease;
+        }
+        .grey-box-hover:hover {
+            background: rgba(160, 160, 160, 0.28);
+            border-color: rgba(240, 240, 240, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Custom subtle scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080a10;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(150, 150, 150, 0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(200, 200, 200, 0.5);
+        }
+    </style>
+</head>
+<body class="relative min-h-screen font-serif selection:bg-slate-700 selection:text-white">
+
+    <!-- Interactive Background Starfield Canvas -->
+    <canvas id="starfieldCanvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-40 w-full grey-box rounded-none border-x-0 border-t-0 border-b border-gray-700/60 bg-slate-950/80 backdrop-blur-md">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <!-- Brand / Name -->
+            <a href="#home" class="text-xl sm:text-2xl font-normal tracking-wide text-white hover:text-gray-300 transition-colors">
+                Giovanni Isopi
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden md:flex items-center space-x-6 text-sm tracking-wider">
+                <a href="#home" class="nav-link text-slate-300 hover:text-white transition-colors py-1">Home</a>
+                <a href="#about" class="nav-link text-slate-300 hover:text-white transition-colors py-1">About</a>
+                <a href="#research" class="nav-link text-slate-300 hover:text-white transition-colors py-1">Research Interests</a>
+                <a href="#astrophotography" class="nav-link text-slate-300 hover:text-white transition-colors py-1">Astrophotography</a>
+                <a href="#extra" class="nav-link text-slate-300 hover:text-white transition-colors py-1">Extra</a>
+            </nav>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button id="mobileMenuBtn" class="md:hidden p-2 text-slate-300 hover:text-white" aria-label="Toggle Navigation">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden border-t border-gray-700/60 bg-slate-950/95 px-4 pt-2 pb-4 space-y-2">
+            <a href="#home" class="mobile-nav-link block px-3 py-2 text-base text-slate-200 hover:bg-white/5 rounded">Home</a>
+            <a href="#about" class="mobile-nav-link block px-3 py-2 text-base text-slate-200 hover:bg-white/5 rounded">About</a>
+            <a href="#research" class="mobile-nav-link block px-3 py-2 text-base text-slate-200 hover:bg-white/5 rounded">Research Interests</a>
+            <a href="#astrophotography" class="mobile-nav-link block px-3 py-2 text-base text-slate-200 hover:bg-white/5 rounded">Astrophotography</a>
+            <a href="#extra" class="mobile-nav-link block px-3 py-2 text-base text-slate-200 hover:bg-white/5 rounded">Extra</a>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="relative z-10">
+
+        <!-- ================= PAGE 1: HOME ================= -->
+        <section id="page-home" class="page-section hidden min-h-[calc(100vh-4rem)]">
+            
+            <!-- TOP HERO PART: Giovanni Isopi's personal website title over astrophotography image -->
+            <div class="astro-hero-bg py-24 sm:py-32 px-4 sm:px-6 lg:px-8 text-center border-b border-gray-800">
+                <div class="max-w-4xl mx-auto space-y-4">
+                    <h1 class="text-4xl sm:text-6xl font-normal text-white tracking-wide drop-shadow-lg">
+                        Giovanni Isopi
+                    </h1>
+                    <p class="text-lg sm:text-2xl text-gray-200 italic font-serif tracking-wider drop-shadow-md">
+                        Personal Academic Website
+                    </p>
+                    <p class="text-xs sm:text-sm text-gray-300 uppercase tracking-widest font-mono pt-2">
+                        Researcher • Astrophysics • Astrophotography
+                    </p>
+                </div>
+            </div>
+
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 py-12 space-y-16">
+                
+                <!-- CENTER SECTION: 4 Grey Panels Linking to the other pages -->
+                <div class="space-y-6">
+                    <div class="text-center space-y-1">
+                        <h2 class="text-xl sm:text-2xl font-normal text-white tracking-wide">Explore</h2>
+                        <div class="w-12 h-0.5 bg-gray-500 mx-auto"></div>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <!-- Portal 1: About -->
+                        <a href="#about" class="grey-box grey-box-hover p-6 block space-y-3 group">
+                            <div class="flex items-center justify-between text-white">
+                                <h3 class="text-xl font-normal group-hover:underline">About</h3>
+                                <i class="fa-solid fa-user text-gray-400 group-hover:text-white transition-colors"></i>
+                            </div>
+                            <p class="text-sm text-gray-300 leading-relaxed">
+                                Academic background, research affiliation, biography, and full Curriculum Vitae.
+                            </p>
+                            <span class="text-xs font-mono text-gray-400 group-hover:text-white transition-colors block pt-2">
+                                Go to About &rarr;
+                            </span>
+                        </a>
+
+                        <!-- Portal 2: Research Interests -->
+                        <a href="#research" class="grey-box grey-box-hover p-6 block space-y-3 group">
+                            <div class="flex items-center justify-between text-white">
+                                <h3 class="text-xl font-normal group-hover:underline">Research Interests</h3>
+                                <i class="fa-solid fa-atom text-gray-400 group-hover:text-white transition-colors"></i>
+                            </div>
+                            <p class="text-sm text-gray-300 leading-relaxed">
+                                Scientific focus areas, ongoing research projects, and selected peer-reviewed publications.
+                            </p>
+                            <span class="text-xs font-mono text-gray-400 group-hover:text-white transition-colors block pt-2">
+                                Go to Research Interests &rarr;
+                            </span>
+                        </a>
+
+                        <!-- Portal 3: Astrophotography -->
+                        <a href="#astrophotography" class="grey-box grey-box-hover p-6 block space-y-3 group">
+                            <div class="flex items-center justify-between text-white">
+                                <h3 class="text-xl font-normal group-hover:underline">Astrophotography</h3>
+                                <i class="fa-solid fa-camera-retro text-gray-400 group-hover:text-white transition-colors"></i>
+                            </div>
+                            <p class="text-sm text-gray-300 leading-relaxed">
+                                Personal deep-sky astro gallery, telescope setup specs, exposure times, and high-res imagery.
+                            </p>
+                            <span class="text-xs font-mono text-gray-400 group-hover:text-white transition-colors block pt-2">
+                                Go to Astrophotography &rarr;
+                            </span>
+                        </a>
+
+                        <!-- Portal 4: Extra -->
+                        <a href="#extra" class="grey-box grey-box-hover p-6 block space-y-3 group">
+                            <div class="flex items-center justify-between text-white">
+                                <h3 class="text-xl font-normal group-hover:underline">Extra</h3>
+                                <i class="fa-solid fa-compass text-gray-400 group-hover:text-white transition-colors"></i>
+                            </div>
+                            <p class="text-sm text-gray-300 leading-relaxed">
+                                Teaching activities, public outreach, open-source code repositories, and recommended reading.
+                            </p>
+                            <span class="text-xs font-mono text-gray-400 group-hover:text-white transition-colors block pt-2">
+                                Go to Extra &rarr;
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- BOTTOM SECTION OF HOME: Profile Photo & Brief Welcome Intro -->
+                <div class="grey-box p-8 space-y-6">
+                    <div class="flex flex-col md:flex-row items-center gap-8">
+                        <!-- Profile Photo located at bottom as requested -->
+                        <div class="shrink-0">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop" 
+                                 alt="Giovanni Isopi Profile Photo" 
+                                 class="w-36 h-36 sm:w-44 sm:h-44 rounded-full object-cover border-2 border-gray-400/40 shadow-xl">
+                        </div>
+
+                        <div class="space-y-3 text-center md:text-left">
+                            <h3 class="text-2xl font-normal text-white">Welcome</h3>
+                            <p class="text-sm sm:text-base text-gray-200 leading-relaxed">
+                                Welcome to my academic portal. I am <span class="text-white font-semibold">Giovanni Isopi</span>, an academic researcher specializing in astrophysics and observational cosmology. In addition to my scientific work, I spend dark nights capturing deep-space objects through narrowband and broadband astrophotography.
+                            </p>
+                            <p class="text-sm text-gray-300">
+                                Feel free to navigate through the sections above to read my publications, browse astro images, or explore software projects.
+                            </p>
+                            <div class="pt-2 flex flex-wrap justify-center md:justify-start gap-3">
+                                <a href="mailto:giovanni.isopi@example.com" class="text-xs font-mono grey-box px-3 py-1.5 text-gray-200 hover:text-white hover:border-gray-300 transition-all">
+                                    <i class="fa-solid fa-envelope mr-1 text-gray-400"></i> Contact Me
+                                </a>
+                                <a href="https://github.com/eesopee" target="_blank" rel="noopener" class="text-xs font-mono grey-box px-3 py-1.5 text-gray-200 hover:text-white hover:border-gray-300 transition-all">
+                                    <i class="fa-brands fa-github mr-1 text-gray-400"></i> GitHub eesopee
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= PAGE 2: ABOUT ================= -->
+        <section id="page-about" class="page-section hidden min-h-[calc(100vh-4rem)]">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12 space-y-8">
+                
+                <div class="border-b border-gray-800 pb-4">
+                    <h1 class="text-3xl font-normal text-white">About Giovanni Isopi</h1>
+                    <p class="text-sm text-gray-400 mt-1 italic">Academic background, research affiliation, and contact details.</p>
+                </div>
+
+                <!-- Academic Details Box -->
+                <div class="grey-box p-6 sm:p-8 space-y-6">
+                    <div class="space-y-2 border-b border-gray-700/60 pb-4">
+                        <h2 class="text-xl font-normal text-white">Academic Profile</h2>
+                        <p class="text-sm text-gray-300">
+                            <span class="font-bold text-white">Position:</span> Postdoctoral Research Fellow
+                        </p>
+                        <p class="text-sm text-gray-300">
+                            <span class="font-bold text-white">Department:</span> Department of Physics & Astronomy
+                        </p>
+                    </div>
+
+                    <div class="space-y-4 text-sm sm:text-base text-gray-200 leading-relaxed">
+                        <h3 class="text-lg font-normal text-white">Biography</h3>
+                        <p>
+                            I am an observational researcher working at the intersection of galactic dynamics, gas kinematically resolved spectroscopy, and cosmic structure evolution. My research leverages multi-wavelength dataset arrays from space and ground observatories.
+                        </p>
+                        <p>
+                            My academic journey began with a focus on physics and numerical astrophysics, followed by doctoral research investigating high-redshift galaxy kinematics and interstellar medium diagnostics.
+                        </p>
+                    </div>
+
+                    <!-- Academic Links -->
+                    <div class="pt-4 border-t border-gray-700/60 space-y-3">
+                        <h3 class="text-sm uppercase tracking-wider font-mono text-gray-400">Academic Links & Resources</h3>
+                        <div class="flex flex-wrap gap-3 text-xs font-mono">
+                            <a href="mailto:giovanni.isopi@example.com" class="grey-box px-3 py-2 text-slate-200 hover:text-white transition-all flex items-center gap-1.5">
+                                <i class="fa-solid fa-envelope text-gray-400"></i> Email
+                            </a>
+                            <a href="https://scholar.google.com" target="_blank" rel="noopener" class="grey-box px-3 py-2 text-slate-200 hover:text-white transition-all flex items-center gap-1.5">
+                                <i class="fa-solid fa-graduation-cap text-gray-400"></i> Google Scholar
+                            </a>
+                            <a href="https://orcid.org" target="_blank" rel="noopener" class="grey-box px-3 py-2 text-slate-200 hover:text-white transition-all flex items-center gap-1.5">
+                                <i class="fa-brands fa-orcid text-gray-400"></i> ORCID
+                            </a>
+                            <a href="https://github.com/eesopee" target="_blank" rel="noopener" class="grey-box px-3 py-2 text-slate-200 hover:text-white transition-all flex items-center gap-1.5">
+                                <i class="fa-brands fa-github text-gray-400"></i> GitHub
+                            </a>
+                            <a href="#" class="grey-box px-3 py-2 text-slate-200 hover:text-white transition-all flex items-center gap-1.5">
+                                <i class="fa-solid fa-file-pdf text-gray-400"></i> Download Full CV
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= PAGE 3: RESEARCH INTERESTS ================= -->
+        <section id="page-research" class="page-section hidden min-h-[calc(100vh-4rem)]">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12 space-y-10">
+                
+                <div class="border-b border-gray-800 pb-3">
+                    <h1 class="text-3xl font-normal text-white">Research Interests</h1>
+                    <p class="text-sm text-gray-400 mt-1 italic">Scientific themes, ongoing projects, and selected publications.</p>
+                </div>
+
+                <!-- Research Themes -->
+                <div class="space-y-4">
+                    <h2 class="text-xs font-mono uppercase tracking-widest text-gray-400">Primary Themes</h2>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="grey-box p-5 space-y-2">
+                            <h3 class="text-base font-normal text-white border-b border-gray-700/50 pb-1">Galactic Kinematics</h3>
+                            <p class="text-xs text-gray-300 leading-relaxed">
+                                Investigating ionized gas rotation curves and galactic outflows in star-forming galaxies across cosmic time.
+                            </p>
+                        </div>
+                        <div class="grey-box p-5 space-y-2">
+                            <h3 class="text-base font-normal text-white border-b border-gray-700/50 pb-1">Interstellar Physics</h3>
+                            <p class="text-xs text-gray-300 leading-relaxed">
+                                Spectroscopic diagnostics of H II regions, dust grain temperatures, and interstellar extinction laws.
+                            </p>
+                        </div>
+                        <div class="grey-box p-5 space-y-2">
+                            <h3 class="text-base font-normal text-white border-b border-gray-700/50 pb-1">Astrostatistics</h3>
+                            <p class="text-xs text-gray-300 leading-relaxed">
+                                Automated spectral emission-line fitting pipelines using Markov Chain Monte Carlo (MCMC) methods.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Publications List -->
+                <div class="space-y-4">
+                    <h2 class="text-xs font-mono uppercase tracking-widest text-gray-400">Selected Publications</h2>
+                    
+                    <div class="space-y-4">
+                        <div class="grey-box p-6 space-y-3">
+                            <div class="flex flex-wrap items-center justify-between text-xs text-gray-400 font-mono gap-2">
+                                <span>The Astrophysical Journal (ApJ), 2026</span>
+                                <span>DOI: 10.3847/1538-4357/ab98c0</span>
+                            </div>
+                            <h3 class="text-base font-normal text-white hover:text-gray-300 transition-colors cursor-pointer" onclick="toggleAbstract('pub1')">
+                                Spatially Resolved Emission Line Kinematics in High-Redshift Star-Forming Galaxies
+                            </h3>
+                            <p class="text-xs text-gray-300">
+                                <span class="font-bold text-white">Isopi, G.</span>, Chen, L., & Research Collaboration.
+                            </p>
+                            
+                            <div id="pub1" class="hidden text-xs text-gray-300 bg-slate-950/60 p-4 rounded border border-gray-700/50 space-y-1">
+                                <span class="font-bold font-mono text-gray-400 text-[10px] uppercase">Abstract</span>
+                                <p class="leading-relaxed">We analyze high-resolution optical and infrared spectroscopy to constrain gas velocity dispersion profiles in starbursting systems at redshift z > 1.5.</p>
+                            </div>
+
+                            <div class="flex flex-wrap gap-2 pt-1">
+                                <button onclick="toggleAbstract('pub1')" class="text-xs font-mono grey-box px-3 py-1 text-gray-300 hover:text-white transition-all">
+                                    [ Abstract ]
+                                </button>
+                                <a href="https://arxiv.org" target="_blank" class="text-xs font-mono grey-box px-3 py-1 text-gray-300 hover:text-white transition-all">
+                                    [ ArXiv PDF ]
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="grey-box p-6 space-y-3">
+                            <div class="flex flex-wrap items-center justify-between text-xs text-gray-400 font-mono gap-2">
+                                <span>MNRAS, 2025</span>
+                                <span>DOI: 10.1093/mnras/stad112</span>
+                            </div>
+                            <h3 class="text-base font-normal text-white hover:text-gray-300 transition-colors cursor-pointer" onclick="toggleAbstract('pub2')">
+                                Thermal Dust Emission and Gas Mass Estimates in Intermediate-Redshift Clusters
+                            </h3>
+                            <p class="text-xs text-gray-300">
+                                Martinez, K., & <span class="font-bold text-white">Isopi, G.</span>
+                            </p>
+                            
+                            <div id="pub2" class="hidden text-xs text-gray-300 bg-slate-950/60 p-4 rounded border border-gray-700/50 space-y-1">
+                                <span class="font-bold font-mono text-gray-400 text-[10px] uppercase">Abstract</span>
+                                <p class="leading-relaxed">Multi-frequency continuum observations were used to fit dust temperatures across cluster infall regions.</p>
+                            </div>
+
+                            <div class="flex flex-wrap gap-2 pt-1">
+                                <button onclick="toggleAbstract('pub2')" class="text-xs font-mono grey-box px-3 py-1 text-gray-300 hover:text-white transition-all">
+                                    [ Abstract ]
+                                </button>
+                                <a href="#" class="text-xs font-mono grey-box px-3 py-1 text-gray-300 hover:text-white transition-all">
+                                    [ PDF ]
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= PAGE 4: ASTROPHOTOGRAPHY ================= -->
+        <section id="page-astrophotography" class="page-section hidden min-h-[calc(100vh-4rem)]">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 py-12 space-y-8">
+                
+                <div class="border-b border-gray-800 pb-3 space-y-2">
+                    <h1 class="text-3xl font-normal text-white">Astrophotography Gallery</h1>
+                    <p class="text-sm text-gray-300 leading-relaxed">
+                        Deep-sky targets imaged under dark skies using narrowband and broadband filtering techniques.
+                    </p>
+                    <p class="text-xs text-gray-400 italic">
+                        <i class="fa-solid fa-circle-info text-gray-400 mr-1"></i> Tip: Upload your own photos to GitHub and update the image links in the gallery items below!
+                    </p>
+                </div>
+
+                <!-- Photo Gallery Grid -->
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Photo 1 -->
+                    <div class="grey-box grey-box-hover overflow-hidden cursor-pointer group" 
+                         onclick="openLightbox('Orion Nebula (M42)', 'Messier 42', 'https://images.unsplash.com/photo-1543722530-d2c3201371e7?q=80&w=1600&auto=format&fit=crop', '18.5 Hours (SHO Narrowband)', '120mm Refractor', 'ZWO ASI2600MM Pro', 'Bortle 3 Site', 'Nov 2025')">
+                        <div class="aspect-video bg-black overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1543722530-d2c3201371e7?q=80&w=800&auto=format&fit=crop" 
+                                 alt="Orion Nebula" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-4 space-y-1">
+                            <h3 class="text-base font-normal text-white">Orion Nebula (M42)</h3>
+                            <p class="text-xs font-mono text-gray-400">18.5h • Narrowband • Nov 2025</p>
+                        </div>
+                    </div>
+
+                    <!-- Photo 2 -->
+                    <div class="grey-box grey-box-hover overflow-hidden cursor-pointer group" 
+                         onclick="openLightbox('Andromeda Galaxy (M31)', 'Messier 31', 'https://images.unsplash.com/photo-1502134249126-9f3755a50d78?q=80&w=1600&auto=format&fit=crop', '24.0 Hours (LRGB + Ha)', '60mm APO Quintuplet', 'ZWO ASI6200MM', 'Bortle 2 Site', 'Oct 2025')">
+                        <div class="aspect-video bg-black overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1502134249126-9f3755a50d78?q=80&w=800&auto=format&fit=crop" 
+                                 alt="Andromeda Galaxy" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-4 space-y-1">
+                            <h3 class="text-base font-normal text-white">Andromeda Galaxy (M31)</h3>
+                            <p class="text-xs font-mono text-gray-400">24.0h • LRGB Broadband • Oct 2025</p>
+                        </div>
+                    </div>
+
+                    <!-- Photo 3 -->
+                    <div class="grey-box grey-box-hover overflow-hidden cursor-pointer group" 
+                         onclick="openLightbox('Rosette Nebula', 'NGC 2237', 'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?q=80&w=1600&auto=format&fit=crop', '32.0 Hours (SHO Palette)', '120mm Refractor', 'ZWO ASI2600MM Pro', 'Bortle 3 Site', 'Jan 2026')">
+                        <div class="aspect-video bg-black overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?q=80&w=800&auto=format&fit=crop" 
+                                 alt="Rosette Nebula" 
+                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-4 space-y-1">
+                            <h3 class="text-base font-normal text-white">Rosette Nebula (NGC 2237)</h3>
+                            <p class="text-xs font-mono text-gray-400">32.0h • Hubble Palette • Jan 2026</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 5: EXTRA ================= -->
+        <section id="page-extra" class="page-section hidden min-h-[calc(100vh-4rem)]">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12 space-y-10">
+                
+                <div class="border-b border-gray-800 pb-3">
+                    <h1 class="text-3xl font-normal text-white">Extra</h1>
+                    <p class="text-sm text-gray-400 mt-1 italic">Teaching, public outreach, software development, and reading list.</p>
+                </div>
+
+                <!-- Teaching & Outreach -->
+                <div class="space-y-4">
+                    <h2 class="text-xs font-mono uppercase tracking-widest text-gray-400">Teaching & Outreach</h2>
+                    <div class="grey-box p-6 space-y-4">
+                        <div class="border-l-2 border-gray-500 pl-4 space-y-1">
+                            <h3 class="text-base font-normal text-white">Observational Astrophysics Teaching Assistant</h3>
+                            <p class="text-xs text-gray-400 font-mono">University Physics Department</p>
+                            <p class="text-xs text-gray-300">Instructed laboratory sessions covering CCD calibration, aperture photometry, and optical image reduction.</p>
+                        </div>
+                        <div class="border-l-2 border-gray-500 pl-4 space-y-1">
+                            <h3 class="text-base font-normal text-white">Public Stargazing & Astronomy Talks</h3>
+                            <p class="text-xs text-gray-400 font-mono">Outreach Volunteer</p>
+                            <p class="text-xs text-gray-300">Organized public viewing sessions with telescopes and delivered accessible talks on celestial mechanics.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Software -->
+                <div class="space-y-4">
+                    <h2 class="text-xs font-mono uppercase tracking-widest text-gray-400">Software & Tools</h2>
+                    <div class="grey-box p-5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-base font-normal text-white">eesopee Repositories</h3>
+                            <a href="https://github.com/eesopee" target="_blank" class="text-xs font-mono text-gray-400 hover:text-white">[ GitHub ]</a>
+                        </div>
+                        <p class="text-xs text-gray-300">Data analysis scripts, automated sequence scripts for astrophotography acquisition, and astronomical spectral processing routines.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Lightbox Modal for Photo Viewing -->
+    <div id="lightboxModal" class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 transition-opacity duration-300">
+        <div class="relative w-full max-w-4xl grey-box overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh]">
+            
+            <button onclick="closeLightbox()" class="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-slate-900/80 text-gray-300 hover:text-white flex items-center justify-center border border-gray-700">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+
+            <div class="md:w-2/3 bg-black flex items-center justify-center p-2">
+                <img id="modalImg" src="" alt="" class="max-h-[60vh] md:max-h-[80vh] w-auto object-contain">
+            </div>
+
+            <div class="md:w-1/3 p-6 space-y-4 overflow-y-auto bg-slate-950/80 border-t md:border-t-0 md:border-l border-gray-700/60 font-serif">
+                <div>
+                    <span id="modalCatalog" class="text-xs font-mono text-gray-400 block"></span>
+                    <h2 id="modalTitle" class="text-xl font-normal text-white mt-1"></h2>
+                </div>
+
+                <div class="space-y-2 text-xs font-mono text-gray-300 border-t border-b border-gray-800 py-3">
+                    <div><span class="text-gray-500">Date:</span> <span id="modalDate"></span></div>
+                    <div><span class="text-gray-500">Exposure:</span> <span id="modalExposure" class="text-gray-200"></span></div>
+                    <div><span class="text-gray-500">Scope:</span> <span id="modalTelescope"></span></div>
+                    <div><span class="text-gray-500">Camera:</span> <span id="modalCamera"></span></div>
+                    <div><span class="text-gray-500">Location:</span> <span id="modalLocation"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Navigation & Functionality -->
+    <script>
+        // SPA Hash Router supporting 5 pages
+        const pages = ['home', 'about', 'research', 'astrophotography', 'extra'];
+
+        function handleRouting() {
+            let hash = window.location.hash.replace('#', '').toLowerCase();
+            if (!pages.includes(hash)) {
+                hash = 'home';
+            }
+
+            // Hide all sections
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+
+            // Reveal current section
+            const activePage = document.getElementById(`page-${hash}`);
+            if (activePage) {
+                activePage.classList.remove('hidden');
+            }
+
+            // Highlight Active Link
+            document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
+                const linkHref = link.getAttribute('href').replace('#', '');
+                if (linkHref === hash) {
+                    link.classList.add('text-white', 'border-b', 'border-gray-300');
+                    link.classList.remove('text-slate-300');
+                } else {
+                    link.classList.remove('text-white', 'border-b', 'border-gray-300');
+                    link.classList.add('text-slate-300');
+                }
+            });
+
+            // Close Mobile Dropdown
+            document.getElementById('mobileMenu').classList.add('hidden');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('hashchange', handleRouting);
+        window.addEventListener('DOMContentLoaded', handleRouting);
+
+        // Mobile Nav Toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        });
+
+        // Abstract Toggle
+        function toggleAbstract(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.toggle('hidden');
+        }
+
+        // Lightbox Functions
+        function openLightbox(title, catalog, imgSrc, exposure, scope, camera, location, date) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalCatalog').textContent = catalog;
+            document.getElementById('modalImg').src = imgSrc;
+            document.getElementById('modalExposure').textContent = exposure;
+            document.getElementById('modalTelescope').textContent = scope;
+            document.getElementById('modalCamera').textContent = camera;
+            document.getElementById('modalLocation').textContent = location;
+            document.getElementById('modalDate').textContent = date;
+
+            const modal = document.getElementById('lightboxModal');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById('lightboxModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('lightboxModal').addEventListener('click', (e) => {
+            if (e.target.id === 'lightboxModal') closeLightbox();
+        });
+
+        // Interactive Canvas Stars Background
+        const canvas = document.getElementById('starfieldCanvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initStars();
+        }
+
+        function initStars() {
+            stars = [];
+            const count = Math.floor((canvas.width * canvas.height) / 10000);
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 1.1 + 0.2,
+                    alpha: Math.random(),
+                    speed: Math.random() * 0.005 + 0.002
+                });
+            }
+        }
+
+        function animateStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(star => {
+                star.alpha += star.speed;
+                if (star.alpha > 1 || star.alpha < 0) {
+                    star.speed = -star.speed;
+                }
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(220, 220, 230, ${Math.abs(star.alpha)})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(animateStars);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        window.onload = function() {
+            resizeCanvas();
+            animateStars();
+        };
+    </script>
+</body>
+</html>
